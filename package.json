@@ -1,0 +1,35 @@
+{
+  "name": "pnpm-upgrade-interactive",
+  "version": "0.0.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc && babel src --out-dir dist --extensions '.tx,.tsx'",
+    "start": "node dist/index.js",
+    "lint": "eslint . --ext '.tx,.tsx'"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.21.0",
+    "@babel/core": "7.21.0",
+    "@babel/preset-env": "7.20.2",
+    "@babel/preset-react": "7.18.6",
+    "@babel/preset-typescript": "7.21.0",
+    "@types/node": "18.14.5",
+    "@types/react": "18.0.28",
+    "@typescript-eslint/eslint-plugin": "5.54.0",
+    "@typescript-eslint/parser": "5.54.0",
+    "eslint": "8.35.0",
+    "eslint-config-airbnb": "19.0.4",
+    "eslint-config-airbnb-typescript": "17.0.0",
+    "eslint-config-prettier": "8.6.0",
+    "eslint-plugin-import": "2.27.5",
+    "eslint-plugin-jsx-a11y": "6.7.1",
+    "eslint-plugin-react": "7.32.2",
+    "eslint-plugin-react-hooks": "4.6.0",
+    "prettier": "2.8.4",
+    "typescript": "4.9.5"
+  },
+  "dependencies": {
+    "react-devtools-core": "4.27.2"
+  }
+}

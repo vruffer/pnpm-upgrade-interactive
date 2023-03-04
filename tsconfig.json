@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "checkJs": true,
+    "esModuleInterop": true,
+    "exactOptionalPropertyTypes": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true,
+    "removeComments": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "emitDeclarationOnly": true,
+    "declarationDir": "dist",
+    "incremental": true,
+    "declaration": true,
+    "target": "esnext",
+    "module": "Node16",
+    "lib": ["ES2021"],
+    "jsx": "react-jsx",
+    "isolatedModules": true,
+    "moduleResolution": "classic"
+  },
+  "include": ["src", "babel.config.cjs", ".eslintrc.cjs"]
+}
