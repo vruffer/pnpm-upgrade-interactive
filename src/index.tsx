@@ -1,3 +1,4 @@
-import {App} from './app';
+import {render} from 'ink';
+import {App} from './app.js';
 
-console.log(App(0));
+render(<App />);

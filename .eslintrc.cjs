@@ -3,7 +3,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint'],
   parserOptions: {
-    project: './tsconfig.json'
+    project: './tsconfig.json',
   },
   extends: [
     'eslint:recommended',
@@ -36,5 +36,10 @@ module.exports = {
       'error',
       {argsIgnorePattern: '^_', varsIgnorePattern: '^_'},
     ],
+    'react/react-in-jsx-scope': 'off',
+    'react/require-default-props': 'off',
+    'react/jsx-props-no-spreading': 'off',
+    'no-console': 'off',
   },
+  ignorePatterns: ['babel.config.cjs', '.eslintrc.cjs', 'dist', 'scripts'],
 };
