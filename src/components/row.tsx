@@ -5,6 +5,7 @@ import {Gem} from './gem.js';
 interface Props extends Version {
   active: boolean;
   onChange: (selected: string) => void;
+  workspacesEnabled: boolean;
 }
 
 export function Row({
@@ -15,6 +16,8 @@ export function Row({
   latest,
   onChange,
   chosen,
+  workspace,
+  workspacesEnabled,
 }: Props) {
   useInput(
     (_input, key) => {
@@ -49,7 +52,18 @@ export function Row({
 
   return (
     <Box flexDirection="row" alignItems="center" width="100%" marginY={0}>
-      <Box borderStyle="round" width="58%" borderColor={borderColor}>
+      {workspacesEnabled && (
+        <Box borderStyle="round" width="20%" borderColor={borderColor}>
+          <Text bold={active} color="whiteBright">
+            {workspace || 'root'}
+          </Text>
+        </Box>
+      )}
+      <Box
+        borderStyle="round"
+        width={workspacesEnabled ? '38%' : '58%'}
+        borderColor={borderColor}
+      >
         <Text bold={active} color="whiteBright">
           {name}
         </Text>

@@ -1,9 +1,18 @@
 import {Box, Text} from 'ink';
 
-export function Header() {
+interface Props {
+  workspacesEnabled: boolean;
+}
+
+export function Header({workspacesEnabled}: Props) {
   return (
     <Box flexDirection="row" alignItems="center" width="100%">
-      <Box borderStyle="round" width="58%">
+      {workspacesEnabled && (
+        <Box borderStyle="round" width="20%">
+          <Text>Workspace</Text>
+        </Box>
+      )}
+      <Box borderStyle="round" width={workspacesEnabled ? '38%' : '58%'}>
         <Text>Package name</Text>
       </Box>
       <Box borderStyle="round" width="14%" paddingX={2}>

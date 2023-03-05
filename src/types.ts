@@ -4,4 +4,5 @@ export interface Version {
   range: string;
   latest?: string | undefined;
   chosen: string;
+  workspace?: string | undefined;
 }

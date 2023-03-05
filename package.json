@@ -7,7 +7,8 @@
     "build": "tsc && babel src --out-dir dist --extensions '.tx,.tsx'",
     "start": "node dist/index.js",
     "lint": "eslint . --ext '.tx,.tsx'",
-    "fakeVersions": "node scripts/printFakeVersions.mjs"
+    "fakeVersions": "node scripts/printFakeVersions.mjs",
+    "prepack": "pnpm build"
   },
   "devDependencies": {
     "@babel/cli": "7.21.0",
@@ -35,5 +36,8 @@
     "ink": "4.0.0",
     "react": "18.2.0"
   },
-  "type": "module"
+  "type": "module",
+  "bin": {
+    "upgrade-interactive": "dist/index.js"
+  }
 }
