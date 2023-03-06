@@ -24,17 +24,17 @@ export function Row({
       if (key.leftArrow) {
         let selected: string;
         if (chosen === current) {
-          selected = latest || range;
+          selected = latest || range || current;
         } else if (chosen === range) {
           selected = current;
         } else {
-          selected = range;
+          selected = range || current;
         }
         onChange(selected);
       } else if (key.rightArrow) {
         let selected: string;
         if (chosen === current) {
-          selected = range;
+          selected = range || latest || current;
         } else if (chosen === range) {
           selected = latest || current;
         } else {
@@ -85,14 +85,19 @@ export function Row({
         borderStyle="round"
         width="14%"
         paddingX={2}
+        height="100%"
         borderColor={active && chosen === range ? 'greenBright' : borderColor}
         alignItems="center"
       >
-        <Gem active={chosen === range} />
-        <Text bold={active} color="whiteBright">
-          {' '}
-          {range}
-        </Text>
+        {range && (
+          <>
+            <Gem active={chosen === range} />
+            <Text bold={active} color="whiteBright">
+              {' '}
+              {range}
+            </Text>
+          </>
+        )}
       </Box>
       <Box
         borderStyle="round"

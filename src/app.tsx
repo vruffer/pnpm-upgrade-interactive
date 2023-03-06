@@ -1,57 +1,38 @@
-import {useMemo, useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import {Box, useApp, useInput} from 'ink';
 import {Row} from './components/row.js';
 import {Version} from './types.js';
 import {Header} from './components/header.js';
-
-const MOCK_DATA: Array<Version> = [
-  {
-    name: 'navigate',
-    current: '9.0.8',
-    range: '4.4.0',
-    latest: '9.5.0',
-    chosen: '9.0.8',
-    workspace: 'project-2',
-  },
-  {
-    name: 'reboot',
-    current: '7.4.4',
-    range: '0.8.3',
-    chosen: '7.4.4',
-    workspace: 'project-2',
-  },
-  {
-    name: 'transmit',
-    current: '3.0.6',
-    range: '8.7.9',
-    latest: '5.9.6',
-    chosen: '3.0.6',
-    workspace: 'project-1',
-  },
-  {
-    name: 'react',
-    current: '3.2.1',
-    range: '6.9.9',
-    latest: '3.6.1',
-    chosen: '3.2.1',
-  },
-];
+import {dependencies} from './lib/dependencyParsing.js';
 
 export function App() {
   const {exit} = useApp();
 
   const [selectedRow, setSelectedRow] = useState(0);
-  const [data, setData] = useState<Version[]>(
-    MOCK_DATA.sort((a, b) => {
-      const aLength = a.workspace?.length || 0;
-      const bLength = b.workspace?.length || 0;
-      return aLength - bLength;
-    }),
-  );
+  const [data, setData] = useState<Version[]>([]);
   const workspaces = useMemo(
     () => data.some(value => Boolean(value.workspace)),
     [data],
   );
+
+  useEffect(() => {
+    dependencies()
+      .then(result => {
+        setData(
+          result
+            .map(value => ({...value, chosen: value.current}))
+            .sort((a, b) => {
+              const aLength = a.workspace?.length || 0;
+              const bLength = b.workspace?.length || 0;
+              return aLength - bLength;
+            }),
+        );
+      })
+      .catch(err => {
+        exit();
+        console.error('Could not fetch dependencies', err);
+      });
+  }, [exit]);
 
   useInput((input, key) => {
     if (input === 'q') {
