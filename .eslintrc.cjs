@@ -23,7 +23,8 @@ module.exports = {
       'LabeledStatement',
       'WithStatement',
     ],
-    'no-use-before-define': [
+    'no-use-before-define': 'off',
+    '@typescript-eslint/no-use-before-define': [
       'error',
       {
         functions: false,
@@ -41,6 +42,15 @@ module.exports = {
     'react/require-default-props': 'off',
     'react/jsx-props-no-spreading': 'off',
     'no-console': 'off',
+    'no-continue': 'off',
   },
   ignorePatterns: ['babel.config.cjs', '.eslintrc.cjs', 'dist', 'scripts'],
+  overrides: [
+    {
+      files: ['__tests__/**/*.ts'],
+      env: {
+        jest: true,
+      },
+    },
+  ],
 };

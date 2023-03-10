@@ -27,5 +27,5 @@
     "moduleResolution": "node16",
     "tsBuildInfoFile": "tsconfig.tsbuildinfo"
   },
-  "include": ["src"]
+  "include": ["src", "__tests__", "jest.config.js"]
 }

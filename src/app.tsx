@@ -1,9 +1,9 @@
 import {useEffect, useMemo, useState} from 'react';
 import {Box, useApp, useInput} from 'ink';
 import {Row} from './components/row.js';
-import {Version} from './types.js';
+import {Version} from './lib/types.js';
 import {Header} from './components/header.js';
-import {dependencies} from './lib/dependencyParsing.js';
+import {listOutdatedDependencies} from './lib/listOutdatedDependencies/index.js';
 
 export function App() {
   const {exit} = useApp();
@@ -16,7 +16,7 @@ export function App() {
   );
 
   useEffect(() => {
-    dependencies()
+    listOutdatedDependencies()
       .then(result => {
         setData(
           result

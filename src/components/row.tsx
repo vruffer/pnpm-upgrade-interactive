@@ -1,5 +1,5 @@
 import {Box, Text, useInput} from 'ink';
-import {Version} from '../types.js';
+import {Version} from '../lib/types.js';
 import {Gem} from './gem.js';
 
 interface Props extends Version {
