@@ -5,6 +5,7 @@ export interface Version {
   latest?: string | undefined;
   chosen: string;
   workspace?: string | undefined;
+  dev: boolean;
 }
 
 export interface OutdatedVersion {
@@ -29,4 +30,12 @@ export interface Dependency {
 export interface RemoteDependency {
   latest: string;
   versions: string[];
+}
+
+export interface PackageToUpdate {
+  name: string;
+  from: string;
+  to: string;
+  workspace?: string | undefined;
+  dev: boolean;
 }

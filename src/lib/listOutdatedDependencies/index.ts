@@ -1,6 +1,7 @@
 import semver from 'semver';
 import {fetchNpmPackage} from '../npm/fetchPackage.js';
-import {OutdatedVersion} from '../types.js';
+import {OutdatedVersion, RemoteDependency} from '../types.js';
+import {isDefined} from '../utils.js';
 import {getRanges} from './getRanges.js';
 import {listDependenciesInPackageJson} from './listDependenciesInPackageJson.js';
 import {pnpmListProjects} from './pnpmListProject.js';
@@ -10,14 +11,26 @@ const tag = 'listOutdatedDependencies';
 export async function listOutdatedDependencies() {
   const projects = await pnpmListProjects();
   let outdatedDependencies: OutdatedVersion[] = [];
+  let rootProject: string | undefined;
+  const fetchedPackages: Record<string, RemoteDependency> = {};
   for (const project of projects) {
     /* eslint-disable no-await-in-loop */
     const {dependencies, devDependencies} = await listDependenciesInPackageJson(
       project,
     );
 
+    if (!rootProject || project.name.length < rootProject.length) {
+      rootProject = project.name;
+    }
+
     const dependencyPromises = dependencies.map(async dependency => {
-      const dependencyInfo = await fetchNpmPackage(dependency.name);
+      if (!fetchedPackages[dependency.name]) {
+        fetchedPackages[dependency.name] = await fetchNpmPackage(
+          dependency.name,
+        );
+      }
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const dependencyInfo = fetchedPackages[dependency.name]!;
       const cleanLocal = semver.coerce(dependency.version);
       if (cleanLocal === null) {
         throw new Error(
@@ -35,8 +48,18 @@ export async function listOutdatedDependencies() {
       return outdatedVersion;
     });
 
+    outdatedDependencies = outdatedDependencies.concat(
+      (await Promise.all(dependencyPromises)).filter(isDefined),
+    );
+
     const devDependencyPromises = devDependencies.map(async dependency => {
-      const dependencyInfo = await fetchNpmPackage(dependency.name);
+      if (!fetchedPackages[dependency.name]) {
+        fetchedPackages[dependency.name] = await fetchNpmPackage(
+          dependency.name,
+        );
+      }
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const dependencyInfo = fetchedPackages[dependency.name]!;
       const cleanLocal = semver.coerce(dependency.version);
       if (cleanLocal === null) {
         throw new Error(
@@ -54,13 +77,7 @@ export async function listOutdatedDependencies() {
     });
 
     outdatedDependencies = outdatedDependencies.concat(
-      // @ts-expect-error filter(Boolean) removes all undefined values
-      (await Promise.all(dependencyPromises)).filter(Boolean),
-    );
-
-    outdatedDependencies = outdatedDependencies.concat(
-      // @ts-expect-error filter(Boolean) removes all undefined values
-      (await Promise.all(devDependencyPromises)).filter(Boolean),
+      (await Promise.all(devDependencyPromises)).filter(isDefined),
     );
 
     /* eslint-enable no-await-in-loop */
@@ -72,5 +89,8 @@ export async function listOutdatedDependencies() {
       workspace: undefined,
     }));
   }
-  return outdatedDependencies;
+  if (!rootProject) {
+    throw new Error(`Expected to find a rootProjectName`);
+  }
+  return {outdatedDependencies, rootProject};
 }
